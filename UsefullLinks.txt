@@ -1,0 +1,9 @@
+https://quarkus.io/guides/tooling
+https://quarkus.io/guides/cassandra
+https://github.com/datastax/cassandra-quarkus/blob/main/quickstart/README.adoc
+https://quarkus.io/blog/quarkus-cassandra-extension-released/
+
+
+
+
+Nie ma jeszcze pluginu do quarkusa ale ciekawe nowe beta IDE:https://www.jetbrains.com/fleet/#distributive
