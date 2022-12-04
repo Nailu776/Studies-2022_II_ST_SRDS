@@ -7,3 +7,21 @@ https://quarkus.io/blog/quarkus-cassandra-extension-released/
 
 
 Nie ma jeszcze pluginu do quarkusa ale ciekawe nowe beta IDE:https://www.jetbrains.com/fleet/#distributive
+
+
+
+Prepare env:
+https://linuxhint.com/installing_gradle_ubuntu/
+
+
+readlink -f $(which java)
+/usr/lib/jvm/java-11-openjdk-amd64/bin/java
+
+
+Dla terminala:
+https://stackoverflow.com/questions/9612941/how-to-set-java-environment-path-in-ubuntu
+
+https://www.jetbrains.com/help/fleet/getting-started-with-kotlin-in-fleet.html#navigate
+
+
+git config --global --unset-all
