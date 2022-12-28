@@ -1,4 +1,4 @@
-package cassdemo.backend;
+package cassproj.backend;
 
 public class BackendException extends Exception {
 	private static final long serialVersionUID = 1L;

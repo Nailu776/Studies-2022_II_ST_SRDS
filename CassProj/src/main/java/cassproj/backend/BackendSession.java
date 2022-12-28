@@ -1,4 +1,4 @@
-package cassdemo.backend;
+package cassproj.backend;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

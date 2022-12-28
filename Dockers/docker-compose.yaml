@@ -6,15 +6,13 @@ services:
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
       - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2
       - CASSANDRA_PASSWORD_SEEDER=yes
-      - CASSANDRA_PASSWORD=cassandra
-
+    
   cassandra-node2:
     image: bitnami/cassandra:latest
     environment:
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
       - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2
-      - CASSANDRA_PASSWORD=cassandra
-  
+        
   # cassandra-node3:
   #   image: bitnami/cassandra:latest
   #   environment:

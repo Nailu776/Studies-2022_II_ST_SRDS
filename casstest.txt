@@ -1,0 +1,11 @@
+
+cassandra@cqlsh> CREATE KEYSPACE test WITH REPLICATION = {'class' : 'SimpleStrategy', 'replication_factor' : 2 };
+cassandra@cqlsh> 
+
+
+docker compose up .
+docker cp ./schema dockers-cassandra-node1-1:/
+
+docker exec -it dockers-cassandra-node1-1 cqlsh -u cassandra -p cassandra -f "./schema/create_schema.cql"
+docker exec -it dockers-cassandra-node1-1 cqlsh -u cassandra -p cassandra -f "./schema/load_data.cql"
+docker exec -it dockers-cassandra-node1-1 cqlsh -u cassandra -p cassandra -f "./schema/drop_schema.cql"

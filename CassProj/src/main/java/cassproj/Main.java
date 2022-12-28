@@ -1,10 +1,10 @@
-package cassdemo;
+package cassproj;
+
+import cassproj.backend.BackendException;
+import cassproj.backend.BackendSession;
 
 import java.io.IOException;
 import java.util.Properties;
-
-import cassdemo.backend.BackendException;
-import cassdemo.backend.BackendSession;
 
 public class Main {
 

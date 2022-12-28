@@ -20,12 +20,21 @@ repositories {
 	maven { url "https://repo.springsource.org/libs-release" }
 	mavenLocal()
 	mavenCentral()
+
 }
 
 dependencies {
+  //Lombok
+  implementation 'org.projectlombok:lombok:1.18.22'
+  compileOnly 'org.projectlombok:lombok:1.18.22'
+  annotationProcessor 'org.projectlombok:lombok:1.18.22'
+  testCompileOnly 'org.projectlombok:lombok:1.18.22'
+  testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
   implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.+'
   implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.+'
 
+ // compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
+ // annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
   implementation 'com.datastax.cassandra:cassandra-driver-core:3.3.0'
   //implementation 'com.datastax.oss:java-driver-core:4.0.1'
   //implementation 'com.datastax.oss:java-driver-query-builder:4.0.1'
@@ -39,7 +48,7 @@ configurations.all {
 
 project.buildDir = 'bin'
 
-mainClassName = "cassdemo.Main"
+mainClassName = "cassproj.Main"
 applicationDefaultJvmArgs = ['--add-opens', 'java.base/jdk.internal.misc=ALL-UNNAMED', '--add-opens', 'java.base/java.nio=ALL-UNNAMED', '--add-opens', 'java.base/java.security=ALL-UNNAMED', '--add-opens', 'jdk.unsupported/sun.misc=ALL-UNNAMED', '--add-opens', 'java.base/sun.security.action=ALL-UNNAMED', '--add-opens', 'jdk.naming.rmi/com.sun.jndi.rmi.registry=ALL-UNNAMED', '--add-opens', 'java.base/sun.net=ALL-UNNAMED', '--add-opens', 'java.base/java.lang=ALL-UNNAMED', '--add-opens', 'java.base/java.lang.reflect=ALL-UNNAMED', '--add-opens', 'java.base/sun.nio.ch=ALL-UNNAMED']
 
 
