@@ -18,8 +18,8 @@ public class SpaceBase {
 
 
     // TODO private or public?
-    public BlockingQueue<String> TransferAirToStorage = new LinkedBlockingDeque<>();
-    public BlockingQueue<String> RequestAir = new LinkedBlockingDeque<>();
+    public BlockingQueue<Integer> TransferAirToStorage = new LinkedBlockingDeque<>();
+    public BlockingQueue<Integer> RequestAir = new LinkedBlockingDeque<>();
 
 
     SpaceBase(int NFloors, int NStaff){

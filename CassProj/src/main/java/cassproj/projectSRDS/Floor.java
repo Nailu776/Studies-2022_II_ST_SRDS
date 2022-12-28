@@ -14,4 +14,8 @@ public class Floor {
         myCPS = new CorridorPopulationSensor(initCPS);
         myAG = new AirGenerator(initAG);
     }
+    public boolean CanGenerateAir(){
+        myAG.randWorking(95);
+        return myAG.isWorking();
+    }
 }

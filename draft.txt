@@ -50,3 +50,9 @@ StaffPerFloors bezposrednio oznacza 1 paczke 100% powietrza
 Jezeli Staff bedzie na 1 pietrze to to pietro poprosi 
 o NFloors paczek 100%.
 
+
+
+
+
+NIE TRZYMAJ WSZYSTKIEGO W KODZIE. 
+WYKORZYSTAJ BAZE DANYCH
