@@ -1,12 +1,42 @@
-208  INFO  c.d.driver.core.GuavaCompatibility: Detected Guava >= 19 in the classpath, using modern compatibility layer
-363  INFO  c.datastax.driver.core.ClockFactory: Using native clock to generate timestamps.
-449  INFO  com.datastax.driver.core.NettyUtil: Found Netty's native epoll transport in the classpath, using it
-880  INFO  c.d.d.c.p.DCAwareRoundRobinPolicy: Using data-center name 'datacenter1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
-885  INFO  com.datastax.driver.core.Cluster: New Cassandra host /172.19.0.3:9042 added
-885  INFO  com.datastax.driver.core.Cluster: New Cassandra host /172.19.0.2:9042 added
-1044 INFO  cassproj.backend.BackendSession: Statements prepared
-1055 INFO  cassproj.backend.BackendSession: User Adam upserted
-1068 INFO  cassproj.backend.BackendSession: User Ola upserted
-1071 INFO  cassproj.backend.BackendSession: User Ewa upserted
-1075 INFO  cassproj.backend.BackendSession: User Kasia upserted
-1284 INFO  cassproj.backend.BackendSession: All users deleted
+225  INFO  c.d.driver.core.GuavaCompatibility: Detected Guava >= 19 in the classpath, using modern compatibility layer
+357  INFO  c.datastax.driver.core.ClockFactory: Using native clock to generate timestamps.
+396  INFO  cassproj.backend.BackendSession: Init database SpaceBase...
+435  INFO  com.datastax.driver.core.NettyUtil: Found Netty's native epoll transport in the classpath, using it
+826  INFO  c.d.d.c.p.DCAwareRoundRobinPolicy: Using data-center name 'datacenter1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
+828  INFO  com.datastax.driver.core.Cluster: New Cassandra host /172.19.0.3:9042 added
+828  INFO  com.datastax.driver.core.Cluster: New Cassandra host /172.19.0.2:9042 added
+924  INFO  cassproj.backend.BackendSession: Init Statements prepared
+926  INFO  cassproj.backend.BackendSession: Creating SpaceBase Keyspace...
+928  INFO  cassproj.backend.BackendSession: Keyspace created.
+928  INFO  cassproj.backend.BackendSession: Creating floors table...
+930  INFO  cassproj.backend.BackendSession: Floors table created.
+930  INFO  cassproj.backend.BackendSession: Creating airStorage table...
+931  INFO  cassproj.backend.BackendSession: airStorage table created.
+931  INFO  cassproj.backend.BackendSession: Init database SpaceBase completed.
+931  INFO  cassproj.backend.BackendSession: Trying to connect to SpaceBase...
+1007 INFO  cassproj.backend.BackendSession: Connected.
+1011 INFO  cassproj.backend.BackendSession: Statements prepared
+52570 INFO  cassproj.backend.BackendSession: Keyspace Spacebase was dropped.
+59971 INFO  cassproj.backend.BackendSession: Closing cluster...
+76990 INFO  c.datastax.driver.core.ClockFactory: Using native clock to generate timestamps.
+76991 INFO  cassproj.backend.BackendSession: Omitting initialization of SpaceBase database.
+76991 INFO  cassproj.backend.BackendSession: Trying to connect to SpaceBase...
+77108 INFO  c.d.d.c.p.DCAwareRoundRobinPolicy: Using data-center name 'datacenter1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
+77108 INFO  com.datastax.driver.core.Cluster: New Cassandra host /172.19.0.3:9042 added
+77108 INFO  com.datastax.driver.core.Cluster: New Cassandra host /172.19.0.2:9042 added
+85000 INFO  c.datastax.driver.core.ClockFactory: Using native clock to generate timestamps.
+85000 INFO  cassproj.backend.BackendSession: Init database SpaceBase...
+85117 INFO  c.d.d.c.p.DCAwareRoundRobinPolicy: Using data-center name 'datacenter1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
+85117 INFO  com.datastax.driver.core.Cluster: New Cassandra host /172.19.0.3:9042 added
+85117 INFO  com.datastax.driver.core.Cluster: New Cassandra host /172.19.0.2:9042 added
+85203 INFO  cassproj.backend.BackendSession: Init Statements prepared
+85203 INFO  cassproj.backend.BackendSession: Creating SpaceBase Keyspace...
+85465 INFO  cassproj.backend.BackendSession: Keyspace created.
+85465 INFO  cassproj.backend.BackendSession: Creating floors table...
+86189 INFO  cassproj.backend.BackendSession: Floors table created.
+86189 INFO  cassproj.backend.BackendSession: Creating airStorage table...
+86480 INFO  cassproj.backend.BackendSession: airStorage table created.
+86481 INFO  cassproj.backend.BackendSession: Init database SpaceBase completed.
+86481 INFO  cassproj.backend.BackendSession: Trying to connect to SpaceBase...
+86585 INFO  cassproj.backend.BackendSession: Connected.
+86590 INFO  cassproj.backend.BackendSession: Statements prepared

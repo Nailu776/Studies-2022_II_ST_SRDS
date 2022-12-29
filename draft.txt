@@ -56,3 +56,14 @@ o NFloors paczek 100%.
 
 NIE TRZYMAJ WSZYSTKIEGO W KODZIE. 
 WYKORZYSTAJ BAZE DANYCH
+
+
+
+Table Floor 
+:
+Id int,
+AirLevelsensor int, 
+CorridorPopulationSensor int, 
+AirGenerator boolean,
+
+Table AirStorage Counter? int 

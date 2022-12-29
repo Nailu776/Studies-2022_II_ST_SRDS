@@ -16,72 +16,48 @@ public class Main {
 		}
 		System.out.print("Enter your choice [number]: ");
 	}
-	private static final String[] menu = {
-			"0- INIT SpaceBase Keyspace and connect to cassandra cluster",
-			"1- Connect to cassandra cluster (if database was previously initialized)",
-			"2- Drop Spacebase database",
+	private static final String[] menu = {"0- Init bazy danych 0",
+			"1- Item 1",
+			"2- Item 2",
 			"3- Exit",
-			"4- Dissconnect",
 	};
 
 	public static void main(String[] args) throws IOException, BackendException {
 
-		// Get properties
+		// Connect to cassandra cluster
 		String contactPoint = null;
 		String keyspace = null;
 		Properties properties = new Properties();
 		try {
 			properties.load(Main.class.getClassLoader().getResourceAsStream(PROPERTIES_FILENAME));
+
 			contactPoint = properties.getProperty("contact_point");
 			keyspace = properties.getProperty("keyspace");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		// Got contact_point and keyspace
+		BackendSession session = new BackendSession(contactPoint, keyspace);
+		// Cassandra connected;
 
 		Scanner scanner = new Scanner(System.in);
-		BackendSession session = null;
 		int item = 1;
-		boolean session_connected = false;
 		while (true){
 			printAppMenu(menu);
 			try {
 				item = scanner.nextInt();
 				switch (item){
 					case 0:
-						if(!session_connected){
-							// Init database
-							session = new BackendSession(contactPoint, keyspace, true);
-							session_connected  = true;
-							// Cassandra connected;
-						}
-						else
-							System.out.println("Already connected to cluster");
+						System.out.println("Wybrano init");
 						break;
 					case 1:
-						if(!session_connected){
-							// Init database
-							session = new BackendSession(contactPoint, keyspace, false);
-							session_connected  = true;
-							// Cassandra connected;
-						}
-						else
-							System.out.println("Already connected to cluster");
+						System.out.println("Wybrano 1");
 						break;
 					case 2:
-						if(session != null){
-							session.dropSpaceBase();
-						}
-						else
-							System.out.println("First connect to cluster");
+						System.out.println("Wybrano 2");
 						break;
 					case 3:
 						System.out.println("Wybrano exit");
 						System.exit(0);
-					case 4:
-						session.dissconnect();
-						session_connected = false;
-						break;
 					default:
 						System.out.println("Possible inputs are integer values between 0 and " + (menu.length-1));
 				}
