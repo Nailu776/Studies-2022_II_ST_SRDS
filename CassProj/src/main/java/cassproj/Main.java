@@ -1,10 +1,10 @@
 package cassproj;
 
-import cassproj.backend.BackendException;
 import cassproj.backend.BackendSession;
 
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -17,14 +17,20 @@ public class Main {
 		System.out.print("Enter your choice [number]: ");
 	}
 	private static final String[] menu = {
-			"0- INIT SpaceBase Keyspace and connect to cassandra cluster",
-			"1- Connect to cassandra cluster (if database was previously initialized)",
-			"2- Drop Spacebase database",
-			"3- Exit",
-			"4- Dissconnect",
+			"0- Exit",
+			"1- INIT SpaceBase Keyspace and connect to cassandra cluster",
+			"2- Connect to cassandra cluster (if database was previously initialized)",
+			"3- Drop Spacebase database",
+			"4- Disconnect",
+			"5- Show floors",
+			"6- Upsert one floor",
+			"7- Upsert N floors",
+			"8- Show this menu",
+			"9- add 100u of air",
+			"10- select air storage",
 	};
 
-	public static void main(String[] args) throws IOException, BackendException {
+	public static void main(String[] args) {
 
 		// Get properties
 		String contactPoint = null;
@@ -37,18 +43,22 @@ public class Main {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		// Got contact_point and keyspace
 
 		Scanner scanner = new Scanner(System.in);
 		BackendSession session = null;
-		int item = 1;
+		int item;
 		boolean session_connected = false;
+		printAppMenu(menu);
 		while (true){
-			printAppMenu(menu);
+			System.out.print("~>>");
 			try {
 				item = scanner.nextInt();
 				switch (item){
 					case 0:
+						scanner.close();
+						System.out.println("System exit");
+						System.exit(0);
+					case 1:
 						if(!session_connected){
 							// Init database
 							session = new BackendSession(contactPoint, keyspace, true);
@@ -58,9 +68,9 @@ public class Main {
 						else
 							System.out.println("Already connected to cluster");
 						break;
-					case 1:
+					case 2:
 						if(!session_connected){
-							// Init database
+							// Connect to database
 							session = new BackendSession(contactPoint, keyspace, false);
 							session_connected  = true;
 							// Cassandra connected;
@@ -68,22 +78,58 @@ public class Main {
 						else
 							System.out.println("Already connected to cluster");
 						break;
-					case 2:
+					case 3:
 						if(session != null){
 							session.dropSpaceBase();
 						}
 						else
 							System.out.println("First connect to cluster");
 						break;
-					case 3:
-						System.out.println("Wybrano exit");
-						System.exit(0);
 					case 4:
+						assert session != null;
 						session.dissconnect();
 						session_connected = false;
 						break;
+					case 5:
+						assert session != null;
+						String output = session.selectAll();
+						System.out.print(output);
+						break;
+					case 6:
+						System.out.println("Please enter following inputs of upserting floor: id, init_AirLevel, init_CorridorPopulation, is_AirGenWorking;" +
+								" as int, int, int, bool respectively.");
+						int id = scanner.nextInt();
+						int initAL = scanner.nextInt();
+						int initCP = scanner.nextInt();
+						boolean isAGW = scanner.nextBoolean();
+						assert session != null;
+						session.upsertFloor(id, initAL, initCP, isAGW);
+						break;
+					case 7:
+						assert session != null;
+						System.out.println("Please enter number [positive integer] of floors to upsert");
+						int N = scanner.nextInt();
+						Random rand = new Random();
+						for (int i = 0; i < N; i++) {
+							session.upsertFloor(i, rand.nextInt(100), rand.nextInt(100), rand.nextBoolean());
+						}
+						break;
+					case 8:
+						printAppMenu(menu);
+						break;
+					case 9:
+						assert session != null;
+						session.upsertAirStorage();
+						break;
+					case 10:
+						assert session != null;
+						System.out.println("test");
+						String output_air = session.selectAirStorage();
+						System.out.print(output_air);
+						break;
 					default:
 						System.out.println("Possible inputs are integer values between 0 and " + (menu.length-1));
+						break;
 				}
 			}
 			catch (Exception ex){

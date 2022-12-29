@@ -16,14 +16,11 @@ import org.slf4j.LoggerFactory;
  */
 
 public class BackendSession {
+	// Private
 	private static final Logger logger = LoggerFactory.getLogger(BackendSession.class);
 	private Session session;
-
-	//private static final String USER_FORMAT = "- %-10s  %-16s %-10s %-10s\n";
-	// private static final SimpleDateFormat df = new
-	// SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-
+	private static final String FLOOR_FORMAT = "- %-10s %-20s %-25s %-20s\n";
+	private static final String AIR_FORMAT = "- %-10s %-20s \n";
 	private static PreparedStatement INIT_KEYSPACE;
 	private static PreparedStatement INIT_FLOORS;
 	private static PreparedStatement INIT_AIRSTORAGE;
@@ -34,13 +31,13 @@ public class BackendSession {
 			INIT_FLOORS = session
 					.prepare("CREATE TABLE IF NOT EXISTS SpaceBase.Floors (\n" +
 							"  id int,\n" +
-							"  airLevelsensor int,\n" +
+							"  airLevelSensor int,\n" +
 							"  corridorPopulationSensor int,\n" +
 							"  airGenerator boolean,\n" +
 							"  PRIMARY KEY (id)\n" +
 							");");
 			INIT_AIRSTORAGE = session.prepare("CREATE TABLE IF NOT EXISTS SpaceBase.AirStorage (\n" +
-					"  id UUID PRIMARY KEY,\n" +
+					"  id int PRIMARY KEY,\n" +
 					"  airStored counter\n" +
 					");");
 		} catch (Exception e) {
@@ -86,7 +83,6 @@ public class BackendSession {
 		}
 	}
 	public BackendSession(String contactPoint, String keyspace, boolean init) throws BackendException {
-
 		// Cassandra cluster
 		Cluster cluster = Cluster.builder().addContactPoint(contactPoint).withCredentials("cassandra","cassandra").build();
 		// Should Initialize database?
@@ -109,20 +105,40 @@ public class BackendSession {
 		prepareStatements();
 	}
 
-	private static PreparedStatement SELECT_ALL_FROM_USERS;
-	private static PreparedStatement INSERT_INTO_USERS;
+	// Other statements
+	private static PreparedStatement SELECT_ALL_FROM_FLOORS;
 	private static PreparedStatement DROP_SPACEBASE;
-
-
+	private static PreparedStatement INSERT_INTO_FLOORS;
+	private static PreparedStatement INCREMENT_100_AIRSTORAGECOUNTER;
+	private static PreparedStatement SELECT_AIR_STORAGE;
 	private void prepareStatements() throws BackendException {
 		try {
 			DROP_SPACEBASE = session.prepare("DROP KEYSPACE SpaceBase;");
+			SELECT_ALL_FROM_FLOORS = session.prepare("SELECT * FROM floors;");
+			INSERT_INTO_FLOORS = session.prepare("INSERT INTO floors" +
+					" (id, airLevelSensor, corridorPopulationSensor, airGenerator)" +
+					" VALUES (?, ?, ?, ?);");
+			INCREMENT_100_AIRSTORAGECOUNTER = session.prepare("UPDATE AirStorage\n" +
+					" SET airStored = airStored + 100\n" +
+					" WHERE id = 0;");
+			SELECT_AIR_STORAGE = session.prepare("SELECT * FROM AirStorage;");
 		} catch (Exception e) {
 			throw new BackendException("Could not prepare statements. " + e.getMessage() + ".", e);
 		}
 		logger.info("Statements prepared");
 	}
 
+	public void upsertFloor(int id, int airLevelSensor,
+							int corridorPopulationSensor, boolean airGenerator) throws BackendException{
+		BoundStatement bs = new BoundStatement(INSERT_INTO_FLOORS);
+		bs.bind(id, airLevelSensor, corridorPopulationSensor, airGenerator);
+		try {
+			session.execute(bs);
+		} catch (Exception e) {
+			throw new BackendException("Could not perform an upsert. " + e.getMessage() + ".", e);
+		}
+		logger.info("Floor " + id + " upserted");
+	}
 	public void dropSpaceBase() throws BackendException{
 		BoundStatement bs = new BoundStatement(DROP_SPACEBASE);
 		try {
@@ -135,42 +151,67 @@ public class BackendSession {
 
 	public String selectAll() throws BackendException {
 		StringBuilder builder = new StringBuilder();
-		BoundStatement bs = new BoundStatement(SELECT_ALL_FROM_USERS);
+		BoundStatement bs = new BoundStatement(SELECT_ALL_FROM_FLOORS);
 
 		ResultSet rs = null;
-
 		try {
 			rs = session.execute(bs);
 		} catch (Exception e) {
 			throw new BackendException("Could not perform a query. " + e.getMessage() + ".", e);
 		}
 
-		for (Row row : rs) {
-			String rcompanyName = row.getString("companyName");
-			String rname = row.getString("name");
-			int rphone = row.getInt("phone");
-			String rstreet = row.getString("street");
+		builder.append(String.format(FLOOR_FORMAT, "ID", "AirLevelSensor", "CorridorPopulationSensor", "AirGenerator"));
 
-		//	builder.append(String.format(USER_FORMAT, rcompanyName, rname, rphone, rstreet));
+		for (Row row : rs) {
+			int rid = row.getInt("id");
+			int rairLevelSensor = row.getInt("airLevelSensor");
+			int rcorridorPopulationSensor = row.getInt("corridorPopulationSensor");
+			boolean rairGenerator = row.getBool("airGenerator");
+			builder.append(String.format(FLOOR_FORMAT, rid, rairLevelSensor, rcorridorPopulationSensor, rairGenerator));
 		}
 
 		return builder.toString();
 	}
 
-	public void upsertUser(String companyName, String name, int phone, String street) throws BackendException {
-		BoundStatement bs = new BoundStatement(INSERT_INTO_USERS);
-		bs.bind(companyName, name, phone, street);
 
+	public String selectAirStorage() throws BackendException {
+		StringBuilder builder = new StringBuilder();
+		BoundStatement bs = new BoundStatement(SELECT_AIR_STORAGE);
+
+		ResultSet rs = null;
+		try {
+//			logger.info("Trying to select AirStorage.");
+			rs = session.execute(bs);
+//			logger.info("Got response.");
+		} catch (Exception e) {
+			throw new BackendException("Could not perform a query. " + e.getMessage() + ".", e);
+		}
+
+		builder.append(String.format(AIR_FORMAT, "ID", "AirLevelSensor"));
+
+//		logger.info("Trying to build string from it.");
+		for (Row row : rs) {
+			int rid = row.getInt("id");
+			Long rairStored = row.getLong("airStored");
+			builder.append(String.format(AIR_FORMAT, rid, rairStored));
+		}
+
+//		logger.info("Returning output.");
+		return builder.toString();
+	}
+
+
+	public void upsertAirStorage() throws BackendException {
+		BoundStatement bs = new BoundStatement(INCREMENT_100_AIRSTORAGECOUNTER);
 		try {
 			session.execute(bs);
 		} catch (Exception e) {
 			throw new BackendException("Could not perform an upsert. " + e.getMessage() + ".", e);
 		}
-
-		logger.info("User " + name + " upserted");
+		logger.info("Air with value " + 100 + " updated");
 	}
 
-
+	// TODO inspect deprecated finalize method
 	public void dissconnect(){
 		finalize();
 	}
