@@ -1,13 +1,16 @@
 package cassproj;
 
+import cassproj.backend.BackendException;
 import cassproj.backend.BackendSession;
+import cassproj.projectSRDS.Simulator;
 
 import java.io.IOException;
 import java.util.Properties;
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
+
+	private static int id = 1;
 
 	private static final String PROPERTIES_FILENAME = "config.properties";
 	public static void printAppMenu(String[] menu){
@@ -26,8 +29,7 @@ public class Main {
 			"6- Upsert one floor",
 			"7- Upsert N floors",
 			"8- Show this menu",
-			"9- add 100u of air",
-			"10- select air storage",
+			"9- run simulation"
 	};
 
 	public static void main(String[] args) {
@@ -87,31 +89,24 @@ public class Main {
 						break;
 					case 4:
 						assert session != null;
-						session.dissconnect();
+						session.disconnect();
 						session_connected = false;
 						break;
 					case 5:
 						assert session != null;
-						String output = session.selectAll();
-						System.out.print(output);
+						System.out.print(session.selectAll());
 						break;
 					case 6:
-						System.out.println("Please enter following inputs of upserting floor: id, init_AirLevel, init_CorridorPopulation, is_AirGenWorking;" +
-								" as int, int, int, bool respectively.");
-						int id = scanner.nextInt();
-						int initAL = scanner.nextInt();
-						int initCP = scanner.nextInt();
-						boolean isAGW = scanner.nextBoolean();
+						System.out.println("Creating a floor.");
 						assert session != null;
-						session.upsertFloor(id, initAL, initCP, isAGW);
+						session.upsertFloor(id++);
 						break;
 					case 7:
 						assert session != null;
 						System.out.println("Please enter number [positive integer] of floors to upsert");
 						int N = scanner.nextInt();
-						Random rand = new Random();
 						for (int i = 0; i < N; i++) {
-							session.upsertFloor(i, rand.nextInt(100), rand.nextInt(100), rand.nextBoolean());
+							session.upsertFloor(id++);
 						}
 						break;
 					case 8:
@@ -119,20 +114,23 @@ public class Main {
 						break;
 					case 9:
 						assert session != null;
-						session.upsertAirStorage();
-						break;
-					case 10:
-						assert session != null;
-						System.out.println("test");
-						String output_air = session.selectAirStorage();
-						System.out.print(output_air);
+						System.out.println("Choose the number of air distributors.");
+						int numberOfDistributors = scanner.nextInt();
+						Simulator sim = new Simulator(session,numberOfDistributors);
+						System.out.println("Starting simulation");
+						sim.start();
 						break;
 					default:
 						System.out.println("Possible inputs are integer values between 0 and " + (menu.length-1));
 						break;
 				}
 			}
+			catch (BackendException ex){
+				System.out.println("Backend Exception.");
+				System.out.println(ex.getMessage());
+			}
 			catch (Exception ex){
+				System.out.println(ex.getMessage());
 				System.out.println("Please enter an integer value between 0 and " + (menu.length-1));
 				// Why scanner.next()? Bcs java intentionally won't skip invalid input;
 				//https://stackoverflow.com/questions/1794281/java-infinite-loop-using-scanner-in-hasnextint

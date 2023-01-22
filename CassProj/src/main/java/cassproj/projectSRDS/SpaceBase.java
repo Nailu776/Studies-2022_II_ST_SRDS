@@ -1,44 +1,52 @@
 package cassproj.projectSRDS;
 
+import cassproj.backend.BackendException;
+import cassproj.backend.BackendSession;
 import lombok.Data;
 
-import java.util.Vector;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 @Data
 public class SpaceBase {
-    private Vector<Floor> FloorsVector;
-    private AirStorage myAS;
-    private AirMonitoring myAM;
-    private AirDistributor myAD;
-    private int Staff;
+    private int numberOfFloors;
+    private int numberOfDistributors;
+    private BackendSession bs;
+    private int staff;
     // Procent personelu oznaczajacy zapotrzebowanie na 1x100% paczke powietrza
-    private double StaffPerFloors;
+    private int storageAir;
+    private List<Integer> airRequestList;
+    private Vector<FloorThread> floorThreadVector = new Vector<FloorThread>();
+    private Vector<AirDistributorThread> distributorThreadVector = new Vector<AirDistributorThread>();
 
 
     // TODO private or public?
     public BlockingQueue<Integer> TransferAirToStorage = new LinkedBlockingDeque<>();
-    public BlockingQueue<Integer> RequestAir = new LinkedBlockingDeque<>();
+    public BlockingQueue<Integer> outOfAir = new LinkedBlockingDeque<>();
 
 
-    SpaceBase(int NFloors, int NStaff){
-        Staff = NStaff;
-        // Init 1 Paczka 100% powietrza;
-        // 100% powietrza == rownomierne rozlozenie personelu/pietra;
-        StaffPerFloors = 1/(double)NFloors;
-        // Init N pieter, kazde majace 100% powietrza i dzialajace generatory powietrza
-        for (int i = 0; i < NFloors; i++) {
-            FloorsVector.add(new Floor(100,StaffPerFloors,true));
-        }
-        // Init Dostepnego powietrza == 100% na kazdym pietrze;
-        // == Maximum dostepnego powietrza;
-        myAS = new AirStorage(100*NFloors);
-        // Monitoring init
-        myAM = new AirMonitoring();
-        // Distributor init
-        myAD = new AirDistributor();
+    SpaceBase(int numberOfDistributors, BackendSession bs) throws BackendException {
+        this.numberOfDistributors = numberOfDistributors;
+        this.numberOfFloors = bs.getNumberOfFloors();
+        this.bs = bs;
     }
 
-
+    public void start() throws InterruptedException {
+        for(int i = 0; i < numberOfDistributors; ++i){
+            System.out.println("Creating distributor thread");
+            outOfAir.put(1);
+            distributorThreadVector.add(new AirDistributorThread(numberOfFloors,50, outOfAir, bs, i+1));
+        }
+        for(int i = 0; i < numberOfFloors;++i){
+            System.out.println("Creating floor thread.");
+            floorThreadVector.add(new FloorThread(i+1, new Random().nextInt(1000)+2000, outOfAir, bs));
+        }
+        for(FloorThread thread : floorThreadVector){
+            thread.start();
+        }
+        for(AirDistributorThread thread : distributorThreadVector){
+            thread.start();
+        }
+    }
 }

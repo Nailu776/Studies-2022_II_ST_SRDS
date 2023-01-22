@@ -1,34 +1,22 @@
 package cassproj.projectSRDS;
 
+import cassproj.backend.BackendException;
+import cassproj.backend.BackendSession;
 import lombok.Data;
-import lombok.SneakyThrows;
 
 @Data
 public class Simulator {
 
     private SpaceBase mySB;
-    public void InitMySB(int NFloors, int NStaff){
-        mySB = new SpaceBase(NFloors, NStaff);
+    public Simulator(BackendSession bs, int numberOfDistributors) throws BackendException {
+        mySB = new SpaceBase(numberOfDistributors, bs);
+    }
+
+    public void start() throws InterruptedException {
+        System.out.println("Entering spacebase.");
+        mySB.start();
     }
 
     // Generating int == 150%
-    @SneakyThrows
-    public void GenerateAir(int GeneratingInt) {
-        for (Floor floor:mySB.getFloorsVector()) {
-            if(floor.CanGenerateAir()) mySB.TransferAirToStorage.put(GeneratingInt);
-        }
-    }
-
-    @SneakyThrows
-    public void RequestAir(int n){
-        Floor nFloor = mySB.getFloorsVector().get(n);
-
-        //Notify monitor about AG status
-        //if(nFloor.getMyAG().isWorking()) // Request air;
-
-
-        // Request air;
-        nFloor.setMyALS(new AirLevelSensor(mySB.RequestAir.take()));
-    }
 
 }

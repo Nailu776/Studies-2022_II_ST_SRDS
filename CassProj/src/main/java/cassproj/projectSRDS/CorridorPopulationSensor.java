@@ -3,9 +3,9 @@ import lombok.Data;
 
 @Data
 public class CorridorPopulationSensor {
-    private double Population;
+    private int Population;
 
-    public CorridorPopulationSensor(double initCPS) {
+    public CorridorPopulationSensor(int initCPS) {
         Population = initCPS;
     }
 }

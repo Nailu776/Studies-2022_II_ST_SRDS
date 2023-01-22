@@ -19,11 +19,10 @@ public class BackendSession {
 	// Private
 	private static final Logger logger = LoggerFactory.getLogger(BackendSession.class);
 	private Session session;
-	private static final String FLOOR_FORMAT = "- %-10s %-20s %-25s %-20s\n";
-	private static final String AIR_FORMAT = "- %-10s %-20s \n";
+	private static final String FLOOR_FORMAT = "- %-10s %-20s %-20s %-20s\n";
 	private static PreparedStatement INIT_KEYSPACE;
 	private static PreparedStatement INIT_FLOORS;
-	private static PreparedStatement INIT_AIRSTORAGE;
+	private static PreparedStatement INIT_FLOORSAIR;
 	private void prepareInitStatements() throws BackendException {
 		try {
 			INIT_KEYSPACE = session.prepare("CREATE KEYSPACE IF NOT EXISTS SpaceBase\n" +
@@ -31,15 +30,16 @@ public class BackendSession {
 			INIT_FLOORS = session
 					.prepare("CREATE TABLE IF NOT EXISTS SpaceBase.Floors (\n" +
 							"  id int,\n" +
-							"  airLevelSensor int,\n" +
-							"  corridorPopulationSensor int,\n" +
-							"  airGenerator boolean,\n" +
+							"  airLevel counter,\n" +
 							"  PRIMARY KEY (id)\n" +
 							");");
-			INIT_AIRSTORAGE = session.prepare("CREATE TABLE IF NOT EXISTS SpaceBase.AirStorage (\n" +
-					"  id int PRIMARY KEY,\n" +
-					"  airStored counter\n" +
-					");");
+			INIT_FLOORSAIR = session
+					.prepare("CREATE TABLE IF NOT EXISTS SpaceBase.FloorsAir (\n" +
+							" id int,\n"+
+							" totalAirConsumed int,\n " +
+							" totalAirConsumptions int, \n " +
+							" PRIMARY KEY (id)\n" +
+							");");
 		} catch (Exception e) {
 			throw new BackendException("Could not prepare init statements. " + e.getMessage() + ".", e);
 		}
@@ -72,14 +72,13 @@ public class BackendSession {
 		} catch (Exception e) {
 			throw new BackendException("Could not create floors table. " + e.getMessage() + ".", e);
 		}
-		// Create table air storage if not exists
-		bs = new BoundStatement(INIT_AIRSTORAGE);
+		bs = new BoundStatement(INIT_FLOORSAIR);
 		try {
-			logger.info("Creating airStorage table...");
+			logger.info("Creating floorsAir table...");
 			session.execute(bs);
-			logger.info("airStorage table created.");
+			logger.info("FloorsAir table created.");
 		} catch (Exception e) {
-			throw new BackendException("Could not create airStorage table. " + e.getMessage() + ".", e);
+			throw new BackendException("Could not create floorsAir table. " + e.getMessage() + ".", e);
 		}
 	}
 	public BackendSession(String contactPoint, String keyspace, boolean init) throws BackendException {
@@ -111,32 +110,73 @@ public class BackendSession {
 	private static PreparedStatement INSERT_INTO_FLOORS;
 	private static PreparedStatement INCREMENT_100_AIRSTORAGECOUNTER;
 	private static PreparedStatement SELECT_AIR_STORAGE;
+	private static PreparedStatement SELECT_AIRLEVEL_FROM_FLOOR;
+	private static PreparedStatement INCREMENT_AIR_LEVEL;
+	private static PreparedStatement DECREMENT_AIR_LEVEL;
+	private static PreparedStatement SET_AIRCONSUMED;
+	private static PreparedStatement SELECT_FLOORSAIR;
+
 	private void prepareStatements() throws BackendException {
+		int i=1;
 		try {
 			DROP_SPACEBASE = session.prepare("DROP KEYSPACE SpaceBase;");
+			i++;
 			SELECT_ALL_FROM_FLOORS = session.prepare("SELECT * FROM floors;");
-			INSERT_INTO_FLOORS = session.prepare("INSERT INTO floors" +
-					" (id, airLevelSensor, corridorPopulationSensor, airGenerator)" +
-					" VALUES (?, ?, ?, ?);");
-			INCREMENT_100_AIRSTORAGECOUNTER = session.prepare("UPDATE AirStorage\n" +
-					" SET airStored = airStored + 100\n" +
-					" WHERE id = 0;");
-			SELECT_AIR_STORAGE = session.prepare("SELECT * FROM AirStorage;");
+			i++;
+//			INSERT_INTO_FLOORS = session.prepare("UPDATE floors WHERE  ;");
+//			i++;
+			SELECT_AIRLEVEL_FROM_FLOOR = session.prepare("SELECT airLevel FROM floors WHERE id = (?);");
+			i++;
+			INCREMENT_AIR_LEVEL = session.prepare("UPDATE floors SET airLevel = airLevel + 1 WHERE id = (?);");
+			i++;
+			DECREMENT_AIR_LEVEL = session.prepare("UPDATE floors SET airLevel = airLevel-(?) WHERE id = (?);");
+			i++;
+			SET_AIRCONSUMED = session.prepare("UPDATE floorsAir SET totalAirConsumed = (?), totalAirConsumptions = (?) WHERE id = (?);");
+			i++;
+			SELECT_FLOORSAIR = session.prepare("SELECT * FROM floorsAir;");
 		} catch (Exception e) {
-			throw new BackendException("Could not prepare statements. " + e.getMessage() + ".", e);
+			throw new BackendException("Could not prepare statement " + i + ". " + e.getMessage() + ".", e);
 		}
 		logger.info("Statements prepared");
 	}
 
-	public void upsertFloor(int id, int airLevelSensor,
-							int corridorPopulationSensor, boolean airGenerator) throws BackendException{
-		BoundStatement bs = new BoundStatement(INSERT_INTO_FLOORS);
-		bs.bind(id, airLevelSensor, corridorPopulationSensor, airGenerator);
-		try {
-			session.execute(bs);
-		} catch (Exception e) {
-			throw new BackendException("Could not perform an upsert. " + e.getMessage() + ".", e);
-		}
+	public long readAirLevel(int id){
+		BoundStatement bs = new BoundStatement(SELECT_AIRLEVEL_FROM_FLOOR);
+		StringBuilder builder = new StringBuilder();
+		ResultSet rs;
+
+		bs.bind(id);
+		rs = session.execute(bs);
+		return rs.one().getLong("airLevel");
+	}
+
+	public void incrementAirLevel(int id){
+		BoundStatement bs = new BoundStatement(INCREMENT_AIR_LEVEL);
+		bs.bind(id);
+		session.execute(bs);
+		logger.info("Floor " + id + " air level incremented.");
+	}
+	public void setTotalAirConsumed(int id, int air, int consumptions){
+		BoundStatement bs = new BoundStatement(SET_AIRCONSUMED);
+		bs.bind(air, consumptions, id);
+		session.execute(bs);
+		logger.info("Total air consumed updated.");
+	}
+	public void decrementAirLevel(int id, int level){
+		BoundStatement bs = new BoundStatement(DECREMENT_AIR_LEVEL);
+		bs.bind((long) level, id);
+		session.execute(bs);
+		logger.info("Floor " + id + " air level decremented.");
+	}
+
+	public void upsertFloor(int id) {
+		BoundStatement bs = new BoundStatement(DECREMENT_AIR_LEVEL);
+		long level = 0;
+		bs.bind(level, id);
+		session.execute(bs);
+		bs = new BoundStatement(SET_AIRCONSUMED);
+		bs.bind( 0,0, id);
+		session.execute(bs);
 		logger.info("Floor " + id + " upserted");
 	}
 	public void dropSpaceBase() throws BackendException{
@@ -149,56 +189,70 @@ public class BackendSession {
 		logger.info("Keyspace Spacebase was dropped.");
 	}
 
+	public int getNumberOfFloors() throws BackendException{
+		BoundStatement bs = new BoundStatement(SELECT_ALL_FROM_FLOORS);
+
+		ResultSet rs;
+		try {
+			rs = session.execute(bs);
+		} catch (Exception e) {
+			throw new BackendException("Could not perform a query. " + e.getMessage() + ".", e);
+		}
+		return rs.all().size();
+	}
 	public String selectAll() throws BackendException {
 		StringBuilder builder = new StringBuilder();
 		BoundStatement bs = new BoundStatement(SELECT_ALL_FROM_FLOORS);
+		BoundStatement bs2 = new BoundStatement(SELECT_FLOORSAIR);
 
-		ResultSet rs = null;
+		ResultSet rs, rs2;
 		try {
 			rs = session.execute(bs);
+			rs2 = session.execute(bs2);
 		} catch (Exception e) {
 			throw new BackendException("Could not perform a query. " + e.getMessage() + ".", e);
 		}
 
-		builder.append(String.format(FLOOR_FORMAT, "ID", "AirLevelSensor", "CorridorPopulationSensor", "AirGenerator"));
+		builder.append(String.format(FLOOR_FORMAT, "ID", "airLevel", "totalAirConsumed", "totalAirConsumptions"));
 
 		for (Row row : rs) {
 			int rid = row.getInt("id");
-			int rairLevelSensor = row.getInt("airLevelSensor");
-			int rcorridorPopulationSensor = row.getInt("corridorPopulationSensor");
-			boolean rairGenerator = row.getBool("airGenerator");
-			builder.append(String.format(FLOOR_FORMAT, rid, rairLevelSensor, rcorridorPopulationSensor, rairGenerator));
+			long airLevel = row.getLong("airLevel");
+			Row row2 = rs2.one();
+			int totalAirConsumed = row2.getInt("totalAirConsumed");
+			int totalAirConsumptions = row2.getInt("totalAirConsumptions");
+			builder.append(String.format(FLOOR_FORMAT, rid, airLevel, totalAirConsumed, totalAirConsumptions));
 		}
 
 		return builder.toString();
 	}
 
 
-	public String selectAirStorage() throws BackendException {
-		StringBuilder builder = new StringBuilder();
-		BoundStatement bs = new BoundStatement(SELECT_AIR_STORAGE);
-
-		ResultSet rs = null;
-		try {
-//			logger.info("Trying to select AirStorage.");
-			rs = session.execute(bs);
-//			logger.info("Got response.");
-		} catch (Exception e) {
-			throw new BackendException("Could not perform a query. " + e.getMessage() + ".", e);
-		}
-
-		builder.append(String.format(AIR_FORMAT, "ID", "AirLevelSensor"));
-
-//		logger.info("Trying to build string from it.");
-		for (Row row : rs) {
-			int rid = row.getInt("id");
-			Long rairStored = row.getLong("airStored");
-			builder.append(String.format(AIR_FORMAT, rid, rairStored));
-		}
-
-//		logger.info("Returning output.");
-		return builder.toString();
-	}
+//	public String selectAirStorage() throws BackendException {
+//		StringBuilder builder = new StringBuilder();
+//		BoundStatement bs = new BoundStatement(SELECT_AIR_STORAGE);
+//
+//		ResultSet rs = null;
+//		try {
+////			logger.info("Trying to select AirStorage.");
+//			rs = session.execute(bs);
+////			logger.info("Got response.");
+//		} catch (Exception e) {
+//			throw new BackendException("Could not perform a query. " + e.getMessage() + ".", e);
+//		}
+//
+//		builder.append(String.format(AIR_FORMAT, "ID", "AirLevelSensor"));
+//
+////		logger.info("Trying to build string from it.");
+//		for (Row row : rs) {
+//			int rid = row.getInt("id");
+//			Long rairStored = row.getLong("airStored");
+//			builder.append(String.format(AIR_FORMAT, rid, rairStored));
+//		}
+//
+////		logger.info("Returning output.");
+//		return builder.toString();
+//	}
 
 
 	public void upsertAirStorage() throws BackendException {
@@ -211,8 +265,10 @@ public class BackendSession {
 		logger.info("Air with value " + 100 + " updated");
 	}
 
+
+
 	// TODO inspect deprecated finalize method
-	public void dissconnect(){
+	public void disconnect(){
 		finalize();
 	}
 	protected void finalize() {

@@ -1,19 +1,458 @@
-225  INFO  c.d.driver.core.GuavaCompatibility: Detected Guava >= 19 in the classpath, using modern compatibility layer
-362  INFO  c.datastax.driver.core.ClockFactory: Using native clock to generate timestamps.
-399  INFO  cassproj.backend.BackendSession: Omitting initialization of SpaceBase database.
-400  INFO  cassproj.backend.BackendSession: Trying to connect to SpaceBase...
-437  INFO  com.datastax.driver.core.NettyUtil: Found Netty's native epoll transport in the classpath, using it
-814  INFO  c.d.d.c.p.DCAwareRoundRobinPolicy: Using data-center name 'datacenter1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
-816  INFO  com.datastax.driver.core.Cluster: New Cassandra host /172.19.0.3:9042 added
-816  INFO  com.datastax.driver.core.Cluster: New Cassandra host /172.19.0.2:9042 added
-914  INFO  cassproj.backend.BackendSession: Connected.
-958  INFO  cassproj.backend.BackendSession: Statements prepared
-5909 INFO  cassproj.backend.BackendSession: Trying to select AirStorage.
-5917 INFO  cassproj.backend.BackendSession: Got response.
-5917 INFO  cassproj.backend.BackendSession: Trying to build string from it.
-5917 INFO  cassproj.backend.BackendSession: Returning output.
-7916 INFO  cassproj.backend.BackendSession: Air with value 100 updated
-9917 INFO  cassproj.backend.BackendSession: Trying to select AirStorage.
-9924 INFO  cassproj.backend.BackendSession: Got response.
-9924 INFO  cassproj.backend.BackendSession: Trying to build string from it.
-9924 INFO  cassproj.backend.BackendSession: Returning output.
+289  INFO  c.d.driver.core.GuavaCompatibility: Detected Guava >= 19 in the classpath, using modern compatibility layer
+460  INFO  c.datastax.driver.core.ClockFactory: Using native clock to generate timestamps.
+532  INFO  cassproj.backend.BackendSession: Init database SpaceBase...
+624  INFO  com.datastax.driver.core.NettyUtil: Found Netty's native epoll transport in the classpath, using it
+1091 INFO  c.d.d.c.p.DCAwareRoundRobinPolicy: Using data-center name 'datacenter1' for DCAwareRoundRobinPolicy (if this is incorrect, please provide the correct datacenter name with DCAwareRoundRobinPolicy constructor)
+1093 INFO  com.datastax.driver.core.Cluster: New Cassandra host /172.19.0.3:9042 added
+1093 INFO  com.datastax.driver.core.Cluster: New Cassandra host /172.19.0.2:9042 added
+1192 INFO  cassproj.backend.BackendSession: Init Statements prepared
+1194 INFO  cassproj.backend.BackendSession: Creating SpaceBase Keyspace...
+1196 INFO  cassproj.backend.BackendSession: Keyspace created.
+1196 INFO  cassproj.backend.BackendSession: Creating floors table...
+1197 INFO  cassproj.backend.BackendSession: Floors table created.
+1197 INFO  cassproj.backend.BackendSession: Creating floorsAir table...
+1198 INFO  cassproj.backend.BackendSession: FloorsAir table created.
+1198 INFO  cassproj.backend.BackendSession: Init database SpaceBase completed.
+1199 INFO  cassproj.backend.BackendSession: Trying to connect to SpaceBase...
+1273 INFO  cassproj.backend.BackendSession: Connected.
+1292 INFO  cassproj.backend.BackendSession: Statements prepared
+15959 INFO  cassproj.backend.BackendSession: Floor 1 upserted
+15963 INFO  cassproj.backend.BackendSession: Floor 2 upserted
+15966 INFO  cassproj.backend.BackendSession: Floor 3 upserted
+15970 INFO  cassproj.backend.BackendSession: Floor 4 upserted
+15974 INFO  cassproj.backend.BackendSession: Floor 5 upserted
+15977 INFO  cassproj.backend.BackendSession: Floor 6 upserted
+15983 INFO  cassproj.backend.BackendSession: Floor 7 upserted
+15989 INFO  cassproj.backend.BackendSession: Floor 8 upserted
+15996 INFO  cassproj.backend.BackendSession: Floor 9 upserted
+16002 INFO  cassproj.backend.BackendSession: Floor 10 upserted
+16007 INFO  cassproj.backend.BackendSession: Floor 11 upserted
+16011 INFO  cassproj.backend.BackendSession: Floor 12 upserted
+16015 INFO  cassproj.backend.BackendSession: Floor 13 upserted
+16018 INFO  cassproj.backend.BackendSession: Floor 14 upserted
+16021 INFO  cassproj.backend.BackendSession: Floor 15 upserted
+16024 INFO  cassproj.backend.BackendSession: Floor 16 upserted
+16029 INFO  cassproj.backend.BackendSession: Floor 17 upserted
+16033 INFO  cassproj.backend.BackendSession: Floor 18 upserted
+16036 INFO  cassproj.backend.BackendSession: Floor 19 upserted
+16048 INFO  cassproj.backend.BackendSession: Floor 20 upserted
+35004 INFO  cassproj.backend.BackendSession: Floor 1 air level incremented.
+35004 INFO  cassproj.backend.BackendSession: Floor 1 air level incremented.
+35004 INFO  cassproj.backend.BackendSession: Floor 1 air level incremented.
+35018 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+35019 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+35020 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+35020 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+35024 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+35027 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+35027 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+35027 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+35030 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+35035 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+35036 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+35038 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+35040 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+35040 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+35045 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+35045 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+35049 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+35049 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+35051 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+35054 INFO  cassproj.backend.BackendSession: Floor 7 air level incremented.
+35055 INFO  cassproj.backend.BackendSession: Floor 7 air level incremented.
+35056 INFO  cassproj.backend.BackendSession: Floor 7 air level incremented.
+35057 INFO  cassproj.backend.BackendSession: Floor 7 air level incremented.
+35058 INFO  cassproj.backend.BackendSession: Floor 8 air level incremented.
+35059 INFO  cassproj.backend.BackendSession: Floor 8 air level incremented.
+35060 INFO  cassproj.backend.BackendSession: Floor 8 air level incremented.
+35062 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+35064 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+35065 INFO  cassproj.backend.BackendSession: Floor 8 air level incremented.
+35073 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+35075 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+35077 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+35079 INFO  cassproj.backend.BackendSession: Floor 11 air level incremented.
+35079 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+35082 INFO  cassproj.backend.BackendSession: Floor 11 air level incremented.
+35085 INFO  cassproj.backend.BackendSession: Floor 12 air level incremented.
+35085 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+35086 INFO  cassproj.backend.BackendSession: Floor 12 air level incremented.
+35090 INFO  cassproj.backend.BackendSession: Floor 13 air level incremented.
+35091 INFO  cassproj.backend.BackendSession: Floor 13 air level incremented.
+35097 INFO  cassproj.backend.BackendSession: Floor 14 air level incremented.
+35098 INFO  cassproj.backend.BackendSession: Floor 14 air level incremented.
+35099 INFO  cassproj.backend.BackendSession: Floor 14 air level incremented.
+35101 INFO  cassproj.backend.BackendSession: Floor 15 air level incremented.
+35100 INFO  cassproj.backend.BackendSession: Floor 14 air level incremented.
+35101 INFO  cassproj.backend.BackendSession: Floor 15 air level incremented.
+35104 INFO  cassproj.backend.BackendSession: Floor 16 air level incremented.
+35108 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+35110 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+35111 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+35111 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+35114 INFO  cassproj.backend.BackendSession: Floor 19 air level incremented.
+35115 INFO  cassproj.backend.BackendSession: Floor 19 air level incremented.
+35115 INFO  cassproj.backend.BackendSession: Floor 20 air level incremented.
+39179 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+39180 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+39182 INFO  cassproj.backend.BackendSession: Floor 9 air level decremented.
+39329 INFO  cassproj.backend.BackendSession: Floor 4 air level decremented.
+39332 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+39499 INFO  cassproj.backend.BackendSession: Floor 17 air level decremented.
+39501 INFO  cassproj.backend.BackendSession: Floor 19 air level decremented.
+39514 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+39521 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+39523 INFO  cassproj.backend.BackendSession: Floor 19 air level incremented.
+39525 INFO  cassproj.backend.BackendSession: Floor 5 air level decremented.
+39551 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+39551 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+39725 INFO  cassproj.backend.BackendSession: Floor 2 air level decremented.
+39728 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+39763 INFO  cassproj.backend.BackendSession: Floor 16 air level decremented.
+39768 INFO  cassproj.backend.BackendSession: Floor 16 air level incremented.
+39768 INFO  cassproj.backend.BackendSession: Floor 16 air level incremented.
+39770 INFO  cassproj.backend.BackendSession: Floor 16 air level incremented.
+39778 INFO  cassproj.backend.BackendSession: Floor 6 air level decremented.
+39791 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+39791 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+39792 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+40181 INFO  cassproj.backend.BackendSession: Floor 1 air level decremented.
+40194 INFO  cassproj.backend.BackendSession: Floor 1 air level incremented.
+40254 INFO  cassproj.backend.BackendSession: Floor 15 air level decremented.
+40257 INFO  cassproj.backend.BackendSession: Floor 15 air level incremented.
+40258 INFO  cassproj.backend.BackendSession: Floor 15 air level incremented.
+40331 INFO  cassproj.backend.BackendSession: Floor 11 air level decremented.
+40336 INFO  cassproj.backend.BackendSession: Floor 11 air level incremented.
+40338 INFO  cassproj.backend.BackendSession: Floor 13 air level decremented.
+40338 INFO  cassproj.backend.BackendSession: Floor 11 air level incremented.
+40341 INFO  cassproj.backend.BackendSession: Floor 7 air level decremented.
+40342 INFO  cassproj.backend.BackendSession: Floor 13 air level incremented.
+40344 INFO  cassproj.backend.BackendSession: Floor 13 air level incremented.
+40348 INFO  cassproj.backend.BackendSession: Floor 7 air level incremented.
+40602 INFO  cassproj.backend.BackendSession: Floor 20 air level decremented.
+40634 INFO  cassproj.backend.BackendSession: Floor 20 air level incremented.
+40748 INFO  cassproj.backend.BackendSession: Floor 12 air level incremented.
+40748 INFO  cassproj.backend.BackendSession: Floor 12 air level decremented.
+40861 INFO  cassproj.backend.BackendSession: Floor 8 air level decremented.
+40861 INFO  cassproj.backend.BackendSession: Floor 14 air level decremented.
+40868 INFO  cassproj.backend.BackendSession: Floor 8 air level incremented.
+40869 INFO  cassproj.backend.BackendSession: Floor 8 air level incremented.
+40873 INFO  cassproj.backend.BackendSession: Floor 10 air level decremented.
+40880 INFO  cassproj.backend.BackendSession: Floor 14 air level incremented.
+40883 INFO  cassproj.backend.BackendSession: Floor 14 air level incremented.
+40886 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+40892 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+40930 INFO  cassproj.backend.BackendSession: Floor 18 air level decremented.
+40939 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+40962 INFO  cassproj.backend.BackendSession: Floor 3 air level decremented.
+40968 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+41293 INFO  cassproj.backend.BackendSession: Floor 9 air level decremented.
+41306 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+43636 INFO  cassproj.backend.BackendSession: Floor 12 air level decremented.
+43647 INFO  cassproj.backend.BackendSession: Floor 12 air level incremented.
+43683 INFO  cassproj.backend.BackendSession: Floor 4 air level decremented.
+43690 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+43795 INFO  cassproj.backend.BackendSession: Floor 8 air level decremented.
+44014 INFO  cassproj.backend.BackendSession: Floor 19 air level decremented.
+44015 INFO  cassproj.backend.BackendSession: Floor 19 air level incremented.
+44021 INFO  cassproj.backend.BackendSession: Floor 17 air level decremented.
+44026 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+44049 INFO  cassproj.backend.BackendSession: Floor 5 air level decremented.
+44059 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+44061 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+44474 INFO  cassproj.backend.BackendSession: Floor 2 air level decremented.
+44475 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+44542 INFO  cassproj.backend.BackendSession: Floor 16 air level decremented.
+44551 INFO  cassproj.backend.BackendSession: Floor 16 air level incremented.
+44556 INFO  cassproj.backend.BackendSession: Floor 16 air level incremented.
+44579 INFO  cassproj.backend.BackendSession: Floor 6 air level decremented.
+44589 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+44590 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+45391 INFO  cassproj.backend.BackendSession: Floor 1 air level decremented.
+45395 INFO  cassproj.backend.BackendSession: Floor 1 air level incremented.
+45396 INFO  cassproj.backend.BackendSession: Floor 1 air level incremented.
+45396 INFO  cassproj.backend.BackendSession: Floor 1 air level incremented.
+45491 INFO  cassproj.backend.BackendSession: Floor 9 air level decremented.
+45495 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+45496 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+45500 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+45525 INFO  cassproj.backend.BackendSession: Floor 15 air level decremented.
+45532 INFO  cassproj.backend.BackendSession: Floor 15 air level incremented.
+45533 INFO  cassproj.backend.BackendSession: Floor 15 air level incremented.
+45680 INFO  cassproj.backend.BackendSession: Floor 11 air level decremented.
+45685 INFO  cassproj.backend.BackendSession: Floor 11 air level incremented.
+45698 INFO  cassproj.backend.BackendSession: Floor 13 air level decremented.
+45701 INFO  cassproj.backend.BackendSession: Floor 13 air level incremented.
+45710 INFO  cassproj.backend.BackendSession: Floor 7 air level decremented.
+45717 INFO  cassproj.backend.BackendSession: Floor 7 air level incremented.
+46217 INFO  cassproj.backend.BackendSession: Floor 20 air level decremented.
+46224 INFO  cassproj.backend.BackendSession: Floor 20 air level incremented.
+46310 INFO  cassproj.backend.BackendSession: Floor 5 air level decremented.
+46315 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+46523 INFO  cassproj.backend.BackendSession: Floor 12 air level decremented.
+46533 INFO  cassproj.backend.BackendSession: Floor 12 air level incremented.
+46741 INFO  cassproj.backend.BackendSession: Floor 14 air level decremented.
+46749 INFO  cassproj.backend.BackendSession: Floor 14 air level incremented.
+46773 INFO  cassproj.backend.BackendSession: Floor 10 air level decremented.
+46784 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+46785 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+46787 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+46871 INFO  cassproj.backend.BackendSession: Floor 18 air level decremented.
+46882 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+46885 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+46885 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+46955 INFO  cassproj.backend.BackendSession: Floor 3 air level decremented.
+46959 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+46961 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+48060 INFO  cassproj.backend.BackendSession: Floor 4 air level decremented.
+48073 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+48076 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+48531 INFO  cassproj.backend.BackendSession: Floor 19 air level decremented.
+48533 INFO  cassproj.backend.BackendSession: Floor 17 air level decremented.
+48538 INFO  cassproj.backend.BackendSession: Floor 19 air level incremented.
+48548 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+49222 INFO  cassproj.backend.BackendSession: Floor 2 air level decremented.
+49225 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+49226 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+49325 INFO  cassproj.backend.BackendSession: Floor 16 air level decremented.
+49335 INFO  cassproj.backend.BackendSession: Floor 16 air level incremented.
+49382 INFO  cassproj.backend.BackendSession: Floor 6 air level decremented.
+49385 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+49689 INFO  cassproj.backend.BackendSession: Floor 9 air level decremented.
+49694 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+49695 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+50626 INFO  cassproj.backend.BackendSession: Floor 1 air level decremented.
+50629 INFO  cassproj.backend.BackendSession: Floor 1 air level incremented.
+50813 INFO  cassproj.backend.BackendSession: Floor 15 air level decremented.
+50839 INFO  cassproj.backend.BackendSession: Floor 5 air level decremented.
+50845 INFO  cassproj.backend.BackendSession: Floor 15 air level incremented.
+50847 INFO  cassproj.backend.BackendSession: Floor 15 air level incremented.
+50885 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+50885 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+50889 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+51048 INFO  cassproj.backend.BackendSession: Floor 11 air level decremented.
+51056 INFO  cassproj.backend.BackendSession: Floor 13 air level decremented.
+51057 INFO  cassproj.backend.BackendSession: Floor 11 air level incremented.
+51058 INFO  cassproj.backend.BackendSession: Floor 11 air level incremented.
+51062 INFO  cassproj.backend.BackendSession: Floor 13 air level incremented.
+51063 INFO  cassproj.backend.BackendSession: Floor 13 air level incremented.
+51079 INFO  cassproj.backend.BackendSession: Floor 7 air level decremented.
+51092 INFO  cassproj.backend.BackendSession: Floor 7 air level incremented.
+51803 INFO  cassproj.backend.BackendSession: Floor 9 air level decremented.
+51818 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+51819 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+51827 INFO  cassproj.backend.BackendSession: Floor 20 air level decremented.
+51841 INFO  cassproj.backend.BackendSession: Floor 20 air level incremented.
+51841 INFO  cassproj.backend.BackendSession: Floor 20 air level incremented.
+52284 INFO  cassproj.backend.BackendSession: Floor 12 air level decremented.
+52287 INFO  cassproj.backend.BackendSession: Floor 12 air level incremented.
+52422 INFO  cassproj.backend.BackendSession: Floor 4 air level decremented.
+52428 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+52429 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+52622 INFO  cassproj.backend.BackendSession: Floor 14 air level decremented.
+52624 INFO  cassproj.backend.BackendSession: Floor 14 air level incremented.
+52625 INFO  cassproj.backend.BackendSession: Floor 14 air level incremented.
+52670 INFO  cassproj.backend.BackendSession: Floor 10 air level decremented.
+52681 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+52818 INFO  cassproj.backend.BackendSession: Floor 18 air level decremented.
+52824 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+52824 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+52826 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+52952 INFO  cassproj.backend.BackendSession: Floor 3 air level decremented.
+52954 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+52955 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+53046 INFO  cassproj.backend.BackendSession: Floor 19 air level decremented.
+53050 INFO  cassproj.backend.BackendSession: Floor 17 air level decremented.
+53051 INFO  cassproj.backend.BackendSession: Floor 19 air level incremented.
+53063 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+53065 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+53246 INFO  cassproj.backend.BackendSession: Floor 1 air level decremented.
+53254 INFO  cassproj.backend.BackendSession: Floor 1 air level incremented.
+53971 INFO  cassproj.backend.BackendSession: Floor 2 air level decremented.
+53976 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+54112 INFO  cassproj.backend.BackendSession: Floor 16 air level decremented.
+54114 INFO  cassproj.backend.BackendSession: Floor 16 air level incremented.
+54184 INFO  cassproj.backend.BackendSession: Floor 6 air level decremented.
+54187 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+55371 INFO  cassproj.backend.BackendSession: Floor 5 air level decremented.
+55374 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+55376 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+55376 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+55564 INFO  cassproj.backend.BackendSession: Floor 14 air level decremented.
+55567 INFO  cassproj.backend.BackendSession: Floor 14 air level incremented.
+55999 INFO  cassproj.backend.BackendSession: Floor 9 air level decremented.
+56007 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+56089 INFO  cassproj.backend.BackendSession: Floor 15 air level decremented.
+56092 INFO  cassproj.backend.BackendSession: Floor 15 air level incremented.
+56400 INFO  cassproj.backend.BackendSession: Floor 11 air level decremented.
+56408 INFO  cassproj.backend.BackendSession: Floor 11 air level incremented.
+56410 INFO  cassproj.backend.BackendSession: Floor 11 air level incremented.
+56417 INFO  cassproj.backend.BackendSession: Floor 13 air level decremented.
+56419 INFO  cassproj.backend.BackendSession: Floor 13 air level incremented.
+56447 INFO  cassproj.backend.BackendSession: Floor 7 air level decremented.
+56452 INFO  cassproj.backend.BackendSession: Floor 7 air level incremented.
+56865 INFO  cassproj.backend.BackendSession: Floor 4 air level decremented.
+56876 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+56878 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+57439 INFO  cassproj.backend.BackendSession: Floor 20 air level decremented.
+57443 INFO  cassproj.backend.BackendSession: Floor 20 air level incremented.
+57553 INFO  cassproj.backend.BackendSession: Floor 19 air level decremented.
+57557 INFO  cassproj.backend.BackendSession: Floor 19 air level incremented.
+57562 INFO  cassproj.backend.BackendSession: Floor 17 air level decremented.
+57564 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+57565 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+58042 INFO  cassproj.backend.BackendSession: Floor 12 air level decremented.
+58045 INFO  cassproj.backend.BackendSession: Floor 12 air level incremented.
+58046 INFO  cassproj.backend.BackendSession: Floor 12 air level incremented.
+58458 INFO  cassproj.backend.BackendSession: Floor 1 air level decremented.
+58460 INFO  cassproj.backend.BackendSession: Floor 1 air level incremented.
+58569 INFO  cassproj.backend.BackendSession: Floor 10 air level decremented.
+58574 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+58722 INFO  cassproj.backend.BackendSession: Floor 2 air level decremented.
+58727 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+58727 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+58756 INFO  cassproj.backend.BackendSession: Floor 18 air level decremented.
+58758 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+58759 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+58760 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+58890 INFO  cassproj.backend.BackendSession: Floor 16 air level decremented.
+58896 INFO  cassproj.backend.BackendSession: Floor 16 air level incremented.
+58945 INFO  cassproj.backend.BackendSession: Floor 3 air level decremented.
+58946 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+58947 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+58989 INFO  cassproj.backend.BackendSession: Floor 6 air level decremented.
+58990 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+59892 INFO  cassproj.backend.BackendSession: Floor 5 air level decremented.
+59898 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+60193 INFO  cassproj.backend.BackendSession: Floor 9 air level decremented.
+60198 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+61222 INFO  cassproj.backend.BackendSession: Floor 4 air level decremented.
+61231 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+61361 INFO  cassproj.backend.BackendSession: Floor 15 air level decremented.
+61366 INFO  cassproj.backend.BackendSession: Floor 15 air level incremented.
+61366 INFO  cassproj.backend.BackendSession: Floor 15 air level incremented.
+61438 INFO  cassproj.backend.BackendSession: Floor 14 air level decremented.
+61444 INFO  cassproj.backend.BackendSession: Floor 14 air level incremented.
+61752 INFO  cassproj.backend.BackendSession: Floor 11 air level decremented.
+61754 INFO  cassproj.backend.BackendSession: Floor 11 air level incremented.
+61781 INFO  cassproj.backend.BackendSession: Floor 13 air level decremented.
+61783 INFO  cassproj.backend.BackendSession: Floor 13 air level incremented.
+61818 INFO  cassproj.backend.BackendSession: Floor 7 air level decremented.
+61829 INFO  cassproj.backend.BackendSession: Floor 7 air level incremented.
+61944 INFO  cassproj.backend.BackendSession: Floor 3 air level decremented.
+61950 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+61951 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+62061 INFO  cassproj.backend.BackendSession: Floor 19 air level decremented.
+62068 INFO  cassproj.backend.BackendSession: Floor 19 air level incremented.
+62069 INFO  cassproj.backend.BackendSession: Floor 19 air level incremented.
+62072 INFO  cassproj.backend.BackendSession: Floor 17 air level decremented.
+62097 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+62290 INFO  cassproj.backend.BackendSession: Floor 9 air level decremented.
+62296 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+63050 INFO  cassproj.backend.BackendSession: Floor 20 air level decremented.
+63055 INFO  cassproj.backend.BackendSession: Floor 20 air level incremented.
+63469 INFO  cassproj.backend.BackendSession: Floor 2 air level decremented.
+63472 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+63670 INFO  cassproj.backend.BackendSession: Floor 16 air level decremented.
+63674 INFO  cassproj.backend.BackendSession: Floor 1 air level decremented.
+63677 INFO  cassproj.backend.BackendSession: Floor 16 air level incremented.
+63677 INFO  cassproj.backend.BackendSession: Floor 1 air level incremented.
+63788 INFO  cassproj.backend.BackendSession: Floor 6 air level decremented.
+63796 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+63803 INFO  cassproj.backend.BackendSession: Floor 12 air level decremented.
+63809 INFO  cassproj.backend.BackendSession: Floor 12 air level incremented.
+63810 INFO  cassproj.backend.BackendSession: Floor 12 air level incremented.
+63811 INFO  cassproj.backend.BackendSession: Floor 12 air level incremented.
+64314 INFO  cassproj.backend.BackendSession: Floor 19 air level decremented.
+64413 INFO  cassproj.backend.BackendSession: Floor 5 air level decremented.
+64425 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+64428 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+64466 INFO  cassproj.backend.BackendSession: Floor 10 air level decremented.
+64477 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+64479 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+64693 INFO  cassproj.backend.BackendSession: Floor 18 air level decremented.
+64701 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+65576 INFO  cassproj.backend.BackendSession: Floor 4 air level decremented.
+65579 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+66487 INFO  cassproj.backend.BackendSession: Floor 9 air level decremented.
+66490 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+66491 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+66569 INFO  cassproj.backend.BackendSession: Floor 19 air level decremented.
+66572 INFO  cassproj.backend.BackendSession: Floor 19 air level incremented.
+66584 INFO  cassproj.backend.BackendSession: Floor 17 air level decremented.
+66599 INFO  cassproj.backend.BackendSession: Floor 17 air level incremented.
+66631 INFO  cassproj.backend.BackendSession: Floor 15 air level decremented.
+66637 INFO  cassproj.backend.BackendSession: Floor 15 air level incremented.
+67100 INFO  cassproj.backend.BackendSession: Floor 11 air level decremented.
+67110 INFO  cassproj.backend.BackendSession: Floor 11 air level incremented.
+67144 INFO  cassproj.backend.BackendSession: Floor 13 air level decremented.
+67149 INFO  cassproj.backend.BackendSession: Floor 13 air level incremented.
+67150 INFO  cassproj.backend.BackendSession: Floor 13 air level incremented.
+67151 INFO  cassproj.backend.BackendSession: Floor 13 air level incremented.
+67186 INFO  cassproj.backend.BackendSession: Floor 7 air level decremented.
+67192 INFO  cassproj.backend.BackendSession: Floor 7 air level incremented.
+67320 INFO  cassproj.backend.BackendSession: Floor 14 air level decremented.
+67323 INFO  cassproj.backend.BackendSession: Floor 14 air level incremented.
+67946 INFO  cassproj.backend.BackendSession: Floor 3 air level decremented.
+67956 INFO  cassproj.backend.BackendSession: Floor 3 air level incremented.
+68216 INFO  cassproj.backend.BackendSession: Floor 2 air level decremented.
+68225 INFO  cassproj.backend.BackendSession: Floor 2 air level incremented.
+68448 INFO  cassproj.backend.BackendSession: Floor 16 air level decremented.
+68461 INFO  cassproj.backend.BackendSession: Floor 16 air level incremented.
+68595 INFO  cassproj.backend.BackendSession: Floor 6 air level decremented.
+68619 INFO  cassproj.backend.BackendSession: Floor 6 air level incremented.
+68659 INFO  cassproj.backend.BackendSession: Floor 20 air level decremented.
+68668 INFO  cassproj.backend.BackendSession: Floor 20 air level incremented.
+68886 INFO  cassproj.backend.BackendSession: Floor 1 air level decremented.
+68903 INFO  cassproj.backend.BackendSession: Floor 1 air level incremented.
+68942 INFO  cassproj.backend.BackendSession: Floor 5 air level decremented.
+68954 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+68956 INFO  cassproj.backend.BackendSession: Floor 5 air level incremented.
+69564 INFO  cassproj.backend.BackendSession: Floor 12 air level decremented.
+69584 INFO  cassproj.backend.BackendSession: Floor 12 air level incremented.
+69929 INFO  cassproj.backend.BackendSession: Floor 4 air level decremented.
+69932 INFO  cassproj.backend.BackendSession: Floor 4 air level incremented.
+70368 INFO  cassproj.backend.BackendSession: Floor 10 air level decremented.
+70376 INFO  cassproj.backend.BackendSession: Floor 10 air level incremented.
+70637 INFO  cassproj.backend.BackendSession: Floor 18 air level decremented.
+70648 INFO  cassproj.backend.BackendSession: Floor 18 air level incremented.
+70681 INFO  cassproj.backend.BackendSession: Floor 9 air level decremented.
+70684 INFO  cassproj.backend.BackendSession: Floor 9 air level incremented.
+71079 INFO  cassproj.backend.BackendSession: Floor 19 air level decremented.
+71082 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+71096 INFO  cassproj.backend.BackendSession: Floor 17 air level decremented.
+71099 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+71903 INFO  cassproj.backend.BackendSession: Floor 15 air level decremented.
+71905 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+72451 INFO  cassproj.backend.BackendSession: Floor 11 air level decremented.
+72452 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+72503 INFO  cassproj.backend.BackendSession: Floor 13 air level decremented.
+72505 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+72552 INFO  cassproj.backend.BackendSession: Floor 7 air level decremented.
+72553 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+72970 INFO  cassproj.backend.BackendSession: Floor 2 air level decremented.
+72972 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+73203 INFO  cassproj.backend.BackendSession: Floor 14 air level decremented.
+73205 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+73230 INFO  cassproj.backend.BackendSession: Floor 16 air level decremented.
+73231 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+73407 INFO  cassproj.backend.BackendSession: Floor 6 air level decremented.
+73410 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+73467 INFO  cassproj.backend.BackendSession: Floor 5 air level decremented.
+73468 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+73940 INFO  cassproj.backend.BackendSession: Floor 3 air level decremented.
+73941 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+74100 INFO  cassproj.backend.BackendSession: Floor 1 air level decremented.
+74101 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+74272 INFO  cassproj.backend.BackendSession: Floor 20 air level decremented.
+74274 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+74285 INFO  cassproj.backend.BackendSession: Floor 4 air level decremented.
+74286 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+74877 INFO  cassproj.backend.BackendSession: Floor 9 air level decremented.
+74878 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+75335 INFO  cassproj.backend.BackendSession: Floor 12 air level decremented.
+75337 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+76266 INFO  cassproj.backend.BackendSession: Floor 10 air level decremented.
+76268 INFO  cassproj.backend.BackendSession: Total air consumed updated.
+76585 INFO  cassproj.backend.BackendSession: Floor 18 air level decremented.
+76586 INFO  cassproj.backend.BackendSession: Total air consumed updated.
