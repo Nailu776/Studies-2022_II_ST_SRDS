@@ -1,21 +1,63 @@
+# version: '2'
+# services:
+#   cassandra-node1:
+#     image: bitnami/cassandra:latest
+#     environment:
+#       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+#       - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2
+#       - CASSANDRA_PASSWORD_SEEDER=yes
+    
+#   cassandra-node2:
+#     image: bitnami/cassandra:latest
+#     environment:
+#       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+#       - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2
+        
+#   # cassandra-node3:
+#   #   image: bitnami/cassandra:latest
+#   #   environment:
+#   #     - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+#   #     - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
+#   #     - CASSANDRA_PASSWORD=cassandra
 version: '2'
 services:
-  cassandra-node1:
-    image: bitnami/cassandra:latest
+  cassandra:
+    image: docker.io/library/cassandra:3.11
+    ports:
+      - 7000:7000
+      - 9042:9042
     environment:
+      - CASSANDRA_SEEDS=cassandra,cassandra2,cassandra3
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
-      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2
       - CASSANDRA_PASSWORD_SEEDER=yes
-    
-  cassandra-node2:
-    image: bitnami/cassandra:latest
+      - CASSANDRA_PASSWORD=cassandra
+      # By default, Cassandra autodetects the available host memory and takes as much as it can.
+      # Therefore, memory options are mandatory if multiple Cassandras are launched in the same node.
+      - MAX_HEAP_SIZE=2G
+      - HEAP_NEWSIZE=200M
+  cassandra2:
+    image: docker.io/library/cassandra:3.11
+    ports:
+      - 7001:7000
+      - 9043:9042
     environment:
+      - CASSANDRA_SEEDS=cassandra,cassandra2,cassandra3
       - CASSANDRA_CLUSTER_NAME=cassandra-cluster
-      - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2
-        
-  # cassandra-node3:
-  #   image: bitnami/cassandra:latest
-  #   environment:
-  #     - CASSANDRA_CLUSTER_NAME=cassandra-cluster
-  #     - CASSANDRA_SEEDS=cassandra-node1,cassandra-node2,cassandra-node3
-  #     - CASSANDRA_PASSWORD=cassandra
+      - CASSANDRA_PASSWORD=cassandra
+      # By default, Cassandra autodetects the available host memory and takes as much as it can.
+      # Therefore, memory options are mandatory if multiple Cassandras are launched in the same node.
+      - MAX_HEAP_SIZE=2G
+      - HEAP_NEWSIZE=200M
+  cassandra3:
+    image: docker.io/library/cassandra:3.11
+    ports:
+      - 7002:7000
+      - 9044:9042
+    environment:
+      - CASSANDRA_SEEDS=cassandra,cassandra2,cassandra3
+      - CASSANDRA_CLUSTER_NAME=cassandra-cluster
+      - CASSANDRA_PASSWORD=cassandra
+      # By default, Cassandra autodetects the available host memory and takes as much as it can.
+      # Therefore, memory options are mandatory if multiple Cassandras are launched in the same node.
+      - MAX_HEAP_SIZE=2G
+      - HEAP_NEWSIZE=200M

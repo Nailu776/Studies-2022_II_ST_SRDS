@@ -8,6 +8,14 @@
             "name": "CassandraNode1",
             "username": "cassandra",
             "password": "cassandra"
+        },
+        {
+            "server": "172.18.0.3",
+            "port": 9042,
+            "previewLimit": 50,
+            "driver": "Cassandra",
+            "name": "Cass",
+            "password": "cassandra"
         }
     ]
 }

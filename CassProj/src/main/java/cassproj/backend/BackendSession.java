@@ -24,15 +24,27 @@ public class BackendSession {
 	private static PreparedStatement INIT_FLOORS;
 	private static PreparedStatement INIT_FLOORSAIR;
 	private void prepareInitStatements() throws BackendException {
+		int i=1;
 		try {
-			INIT_KEYSPACE = session.prepare("CREATE KEYSPACE IF NOT EXISTS SpaceBase\n" +
+			INIT_KEYSPACE = session.prepare("CREATE KEYSPACE IF NOT EXISTS SpaceBase " +
 					"  WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };");
+			i++;
+			// Create Keyspace if not exists
+			BoundStatement bs = new BoundStatement(INIT_KEYSPACE);
+			try {
+				logger.info("Creating SpaceBase Keyspace...");
+				session.execute(bs);
+				logger.info("Keyspace created.");
+			} catch (Exception e) {
+				throw new BackendException("Could not create SpaceBase Keyspace. " + e.getMessage() + ".", e);
+			}
 			INIT_FLOORS = session
 					.prepare("CREATE TABLE IF NOT EXISTS SpaceBase.Floors (\n" +
 							"  id int,\n" +
 							"  airLevel counter,\n" +
 							"  PRIMARY KEY (id)\n" +
 							");");
+			i++;
 			INIT_FLOORSAIR = session
 					.prepare("CREATE TABLE IF NOT EXISTS SpaceBase.FloorsAir (\n" +
 							" id int,\n"+
@@ -41,7 +53,7 @@ public class BackendSession {
 							" PRIMARY KEY (id)\n" +
 							");");
 		} catch (Exception e) {
-			throw new BackendException("Could not prepare init statements. " + e.getMessage() + ".", e);
+			throw new BackendException("Could not prepare init statement " + i + ". " + e.getMessage() + ".", e);
 		}
 		logger.info("Init Statements prepared");
 	}
@@ -54,17 +66,8 @@ public class BackendSession {
 		}
 		// Prepare database init statements
 		prepareInitStatements();
-		// Create Keyspace if not exists
-		BoundStatement bs = new BoundStatement(INIT_KEYSPACE);
-		try {
-			logger.info("Creating SpaceBase Keyspace...");
-			session.execute(bs);
-			logger.info("Keyspace created.");
-		} catch (Exception e) {
-			throw new BackendException("Could not create SpaceBase Keyspace. " + e.getMessage() + ".", e);
-		}
 		// Create table floors if not exists
-		bs = new BoundStatement(INIT_FLOORS);
+		BoundStatement bs = new BoundStatement(INIT_FLOORS);
 		try {
 			logger.info("Creating floors table...");
 			session.execute(bs);
@@ -123,15 +126,13 @@ public class BackendSession {
 			i++;
 			SELECT_ALL_FROM_FLOORS = session.prepare("SELECT * FROM floors;");
 			i++;
-//			INSERT_INTO_FLOORS = session.prepare("UPDATE floors WHERE  ;");
-//			i++;
-			SELECT_AIRLEVEL_FROM_FLOOR = session.prepare("SELECT airLevel FROM floors WHERE id = (?);");
+			SELECT_AIRLEVEL_FROM_FLOOR = session.prepare("SELECT airLevel FROM floors WHERE id = ?;");
 			i++;
-			INCREMENT_AIR_LEVEL = session.prepare("UPDATE floors SET airLevel = airLevel + 1 WHERE id = (?);");
+			INCREMENT_AIR_LEVEL = session.prepare("UPDATE floors SET airLevel = airLevel + 1 WHERE id = ?");
 			i++;
-			DECREMENT_AIR_LEVEL = session.prepare("UPDATE floors SET airLevel = airLevel-(?) WHERE id = (?);");
+			DECREMENT_AIR_LEVEL = session.prepare("UPDATE floors SET airLevel = airLevel - ? WHERE id = ?;");
 			i++;
-			SET_AIRCONSUMED = session.prepare("UPDATE floorsAir SET totalAirConsumed = (?), totalAirConsumptions = (?) WHERE id = (?);");
+			SET_AIRCONSUMED = session.prepare("UPDATE floorsAir SET totalAirConsumed = ?, totalAirConsumptions = ? WHERE id = ?;");
 			i++;
 			SELECT_FLOORSAIR = session.prepare("SELECT * FROM floorsAir;");
 		} catch (Exception e) {
@@ -165,8 +166,16 @@ public class BackendSession {
 	public void decrementAirLevel(int id, int level){
 		BoundStatement bs = new BoundStatement(DECREMENT_AIR_LEVEL);
 		bs.bind((long) level, id);
-		session.execute(bs);
-		logger.info("Floor " + id + " air level decremented.");
+		try {
+//		 	session.execute(bs); // Error: Async execution - Can read before decrement.
+			ResultSetFuture future = session.executeAsync(bs);
+			while (!future.isDone()) {
+				logger.debug("Floor " + id + " is decrementing...");
+			}
+			logger.info("Floor " + id + " air level decremented by " + level +".");
+		} catch (Exception e) {
+			logger.error("Could not perform a decrement operation. " + e.getMessage() + ".");
+		}
 	}
 
 	public void upsertFloor(int id) {

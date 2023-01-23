@@ -128,6 +128,7 @@ public class Main {
 			catch (BackendException ex){
 				System.out.println("Backend Exception.");
 				System.out.println(ex.getMessage());
+				scanner.next();
 			}
 			catch (Exception ex){
 				System.out.println(ex.getMessage());
