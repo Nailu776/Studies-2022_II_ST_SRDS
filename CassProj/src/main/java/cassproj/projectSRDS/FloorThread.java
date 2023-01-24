@@ -25,6 +25,8 @@ public class FloorThread extends Thread{
         int numberOfConsumptions = 0;
         while(true){
             int level = (int) bs.readAirLevel(floorNumber);
+            if (level == 0 && outOfAir.isEmpty())
+                    break;
             try {
                 sleep(time);
             } catch (InterruptedException e) {

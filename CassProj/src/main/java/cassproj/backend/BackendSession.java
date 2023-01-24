@@ -27,7 +27,7 @@ public class BackendSession {
 		int i=1;
 		try {
 			INIT_KEYSPACE = session.prepare("CREATE KEYSPACE IF NOT EXISTS SpaceBase " +
-					"  WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };");
+					"  WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };");
 			i++;
 			// Create Keyspace if not exists
 			BoundStatement bs = new BoundStatement(INIT_KEYSPACE);
@@ -124,17 +124,17 @@ public class BackendSession {
 		try {
 			DROP_SPACEBASE = session.prepare("DROP KEYSPACE SpaceBase;");
 			i++;
-			SELECT_ALL_FROM_FLOORS = session.prepare("SELECT * FROM floors;");
+			SELECT_ALL_FROM_FLOORS = session.prepare("SELECT * FROM floors;").setConsistencyLevel(ConsistencyLevel.ONE);
 			i++;
-			SELECT_AIRLEVEL_FROM_FLOOR = session.prepare("SELECT airLevel FROM floors WHERE id = ?;");
+			SELECT_AIRLEVEL_FROM_FLOOR = session.prepare("SELECT airLevel FROM floors WHERE id = ?;").setConsistencyLevel(ConsistencyLevel.QUORUM);
 			i++;
-			INCREMENT_AIR_LEVEL = session.prepare("UPDATE floors SET airLevel = airLevel + 1 WHERE id = ?");
+			INCREMENT_AIR_LEVEL = session.prepare("UPDATE floors SET airLevel = airLevel + 1 WHERE id = ?").setConsistencyLevel(ConsistencyLevel.QUORUM);
 			i++;
-			DECREMENT_AIR_LEVEL = session.prepare("UPDATE floors SET airLevel = airLevel - ? WHERE id = ?;");
+			DECREMENT_AIR_LEVEL = session.prepare("UPDATE floors SET airLevel = airLevel - ? WHERE id = ?;").setConsistencyLevel(ConsistencyLevel.QUORUM);
 			i++;
-			SET_AIRCONSUMED = session.prepare("UPDATE floorsAir SET totalAirConsumed = ?, totalAirConsumptions = ? WHERE id = ?;");
+			SET_AIRCONSUMED = session.prepare("UPDATE floorsAir SET totalAirConsumed = ?, totalAirConsumptions = ? WHERE id = ?;").setConsistencyLevel(ConsistencyLevel.ONE);
 			i++;
-			SELECT_FLOORSAIR = session.prepare("SELECT * FROM floorsAir;");
+			SELECT_FLOORSAIR = session.prepare("SELECT * FROM floorsAir;").setConsistencyLevel(ConsistencyLevel.ONE);
 		} catch (Exception e) {
 			throw new BackendException("Could not prepare statement " + i + ". " + e.getMessage() + ".", e);
 		}
